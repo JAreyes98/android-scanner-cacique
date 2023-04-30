@@ -4,7 +4,7 @@
     "name": "Sardines",
     "barcode": "768497013346",
     "codproduct": "Sard",
-    "create_at": "2022-05-19T13:17:13Z",
-    "update_at": "0001-01-01T00:00:00Z"
+    "createAt": "2022-05-19T13:17:13Z",
+    "updateAt": "0001-01-01T00:00:00Z"
   }
 }
