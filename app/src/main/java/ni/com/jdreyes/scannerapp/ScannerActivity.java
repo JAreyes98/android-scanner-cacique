@@ -21,19 +21,31 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.common.Barcode;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import ni.com.jdreyes.scannerapp.databinding.ActivityScannerBinding;
+import ni.com.jdreyes.scannerapp.models.Producto;
+import ni.com.jdreyes.scannerapp.rest.conf.RetrofitFactory;
+import ni.com.jdreyes.scannerapp.rest.service.ProductService;
 import ni.com.jdreyes.scannerapp.utils.ImageAnalizer;
+import ni.com.jdreyes.scannerapp.utils.enums.HttpStatus;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ScannerActivity extends AppCompatActivity {
 
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private FloatingActionButton btnInfo;
+    private final ProductService productService = RetrofitFactory.createService(ProductService.class);
+
+    private Producto scannedProduct;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,10 +70,7 @@ public class ScannerActivity extends AppCompatActivity {
 
         OnSuccessListener<List<Barcode>> onSuccessListener =
                 barcodes -> {
-//                    readerBarcodeData(barcodes);
                     if (!barcodes.isEmpty()) {
-                        Intent intent = new Intent();
-                        int RESULT;
                         try {
                                 executorService.shutdown();
 
@@ -69,16 +78,45 @@ public class ScannerActivity extends AppCompatActivity {
                             Toast.makeText(this, "Codigo: ".concat(barcode.getRawValue()), Toast.LENGTH_LONG)
                                     .show();
                             cameraProviderFeature.get().unbindAll();
-                            intent.putExtra("BARCODE", barcode.getRawValue());
-                            RESULT = RESULT_OK;
 
                             btnInfo.setVisibility(View.VISIBLE);
+                            productService.fetchProduct(barcode.getRawValue()).enqueue(new Callback<Producto>() {
+                                @Override
+                                public void onResponse(Call<Producto> call, Response<Producto> response) {
+                                    HttpStatus status = HttpStatus.resolve(response.code());
+                                    if (response.isSuccessful() &&  status == HttpStatus.OK){
+                                        scannedProduct = response.body();
+                                        Bundle bundle = new Bundle();
+//                                        bundle.putInt("id", scannedProduct.getId());
+//                                        bundle.putString("name", scannedProduct.getName());
+//                                        bundle.putString("codproduct", scannedProduct.getCodproduct());
+//                                        bundle.putString("barcode", scannedProduct.getBarcode());
+//                                        bundle.putString("lastUpdate", new SimpleDateFormat("dd/MM/yyyy").format(
+//                                                Objects.isNull(scannedProduct.getUpdateAt())
+//                                                        ? scannedProduct.getCreateAt() : scannedProduct.getUpdateAt()
+//                                        ));
+                                        Intent intent = new Intent(getBaseContext(), ScannerActivity.class);
+                                        startActivityForResult(intent, 0, bundle);
+                                    } else {
+                                        try {
+                                            Toast.makeText(getApplicationContext(), response.errorBody().string(), Toast.LENGTH_LONG).show();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Producto> call, Throwable t) {
+                                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+
                         } catch (ExecutionException | InterruptedException e) {
                             e.printStackTrace();
-                            RESULT = RESULT_CANCELED;
                         }
-                        setResult(RESULT, intent);
-//                        finish();
                     }
                 };
         OnFailureListener onFailureListener = Throwable::printStackTrace;
@@ -133,27 +171,4 @@ public class ScannerActivity extends AppCompatActivity {
             }
         }
     }
-//    private void readerBarcodeData(List<Barcode> barcodes) {
-//        for (Barcode barcode : barcodes) {
-//            Rect bounds = barcode.getBoundingBox();
-//            Point[] corners = barcode.getCornerPoints();
-//            String rawValue = barcode.getRawValue();
-//
-//            int valueType = barcode.getValueType();
-//
-//            switch (valueType) {
-//                case Barcode.TYPE_WIFI: {
-//                    String ssid = barcode.getWifi().getSsid();
-//                    String password = barcode.getWifi().getPassword();
-//                    int type = barcode.getWifi().getEncryptionType();
-//                    break;
-//                }
-//                case Barcode.TYPE_URL: {
-//                    String tittle = barcode.getUrl().getTitle();
-//                    String url = barcode.getUrl().getUrl();
-//                    break;
-//                }
-//            }
-//        }
-//    }
 }

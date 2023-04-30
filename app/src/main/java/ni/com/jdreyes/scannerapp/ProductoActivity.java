@@ -12,6 +12,10 @@ public class ProductoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_producto);
 
+//        ((EditText)findViewById(R.id.editCodigoProd)).setText(savedInstanceState.getString("codproduct"));
+//        ((EditText)findViewById(R.id.editNombreProd)).setText(savedInstanceState.getString("name"));
+//        ((EditText)findViewById(R.id.editUltimaModificacion)).setText(savedInstanceState.getString("lastUpdate"));
+
         // This callback will only be called when MyFragment is at least Started.
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override

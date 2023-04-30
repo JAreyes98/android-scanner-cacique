@@ -1,8 +1,10 @@
 {
-  "id" : 1,
-  "name" : "Posta de cerdo",
-  "cod_product" : "POST20230401355",
-  "barcode" : "768497013346",
-  "create_at": "20230101",
-  "update_at": "20230115"
+  "data": {
+    "id": 663,
+    "name": "Sardines",
+    "barcode": "768497013346",
+    "codproduct": "Sard",
+    "create_at": "2022-05-19T13:17:13Z",
+    "update_at": "0001-01-01T00:00:00Z"
+  }
 }

@@ -3,15 +3,13 @@ package ni.com.jdreyes.scannerapp.rest.conf;
 import android.text.TextUtils;
 
 import com.google.gson.GsonBuilder;
-import com.jdreyes.rifas.utils.UserStaticInfo;
 
+import ni.com.jdreyes.scannerapp.utils.UserStaticInfo;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitFactory {
-
-//    private static final Retrofit retrofit;
 
     private static Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl(APIConfiguration.BASE_API_URL)
@@ -19,21 +17,10 @@ public class RetrofitFactory {
                     new GsonBuilder().serializeNulls().create()
             ));
 
-    private static Retrofit retrofit = builder.build();;
+    private static Retrofit retrofit = builder.build();
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-
-
-//    static  {
-//        String BASE_API_URL = APIConfiguration.BASE_API_URL;
-//        retrofit = new Retrofit.Builder()
-//                .baseUrl(BASE_API_URL)
-//                .addConverterFactory(GsonConverterFactory.create(
-//                        new GsonBuilder().serializeNulls().create()
-//                ))
-//                .build();
-//    }
 
     public static <S> S createService(
             Class<S> serviceClass) {
@@ -52,9 +39,4 @@ public class RetrofitFactory {
 
         return retrofit.create(serviceClass);
     }
-
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    public static Retrofit getInstance() {
-//        return Optional.ofNullable(retrofit).orElseThrow(() -> new RuntimeException("No se ha inicializado Retrofit"));
-//    }
 }
