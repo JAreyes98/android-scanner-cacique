@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import ni.com.jdreyes.scannerapp.models.Secret;
 import ni.com.jdreyes.scannerapp.models.UserAuthentication;
@@ -26,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private final AuthenticationService authenticationService
             = RetrofitFactory.createService(AuthenticationService.class);
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         findViewById(R.id.btnLogin).setOnClickListener(onClickLogin());
 
