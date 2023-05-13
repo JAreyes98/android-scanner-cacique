@@ -52,14 +52,14 @@ public class MainActivity extends AppCompatActivity {
             authentication.setUsername(getTextForElement(R.id.editUsername));
             authentication.setPassword(getTextForElement(R.id.editPassword));
 
-            if (Objects.isNull(authentication.getUsername()) || authentication.getUsername().isEmpty()) {
-                Toast.makeText(this, "Se debe especificar un usuario", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (Objects.isNull(authentication.getPassword()) || authentication.getPassword().isEmpty()) {
-                Toast.makeText(this, "Se debe especificar una contraseña", Toast.LENGTH_SHORT).show();
-                return;
-            }
+//            if (Objects.isNull(authentication.getUsername()) || authentication.getUsername().isEmpty()) {
+//                Toast.makeText(this, "Se debe especificar un usuario", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//            if (Objects.isNull(authentication.getPassword()) || authentication.getPassword().isEmpty()) {
+//                Toast.makeText(this, "Se debe especificar una contraseña", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -67,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            authenticationService.signin(authentication).enqueue(new Callback<Secret>() {
+//            authenticationService.signin(authentication).enqueue(new Callback<Secret>() {
+            authenticationService.signin().enqueue(new Callback<Secret>() {
                 @Override
                 public void onResponse(Call<Secret> call, Response<Secret> response) {
                     HttpStatus httpStatus = HttpStatus.resolve(response.code());

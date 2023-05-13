@@ -1,13 +1,12 @@
 package ni.com.jdreyes.scannerapp.rest.service;
 
 import ni.com.jdreyes.scannerapp.models.Secret;
-import ni.com.jdreyes.scannerapp.models.UserAuthentication;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.POST;
+import retrofit2.http.GET;
 
 public interface AuthenticationService {
 //    @POST("auth/jwt")
-    @POST("auth/jwt")
-    Call<Secret> signin(@Body UserAuthentication userAuthentication);
+//Call<Secret> signin(@Body UserAuthentication userAuthentication);
+    @GET("login.json")
+    Call<Secret> signin();
 }
