@@ -55,6 +55,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    //Utils
+    implementation 'org.apache.commons:commons-text:1.10.0'
+
     //Lombok
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'

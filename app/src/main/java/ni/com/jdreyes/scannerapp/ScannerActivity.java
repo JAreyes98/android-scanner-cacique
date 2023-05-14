@@ -59,9 +59,9 @@ public class ScannerActivity extends AppCompatActivity {
         init();
 
         //Button
-        btnInfo = findViewById(R.id.btnInfo);
-        btnInfo.setVisibility(View.INVISIBLE);
-        btnInfo.setOnClickListener(onBtnInfoClickListener);
+//        btnInfo = findViewById(R.id.btnInfo);
+//        btnInfo.setVisibility(View.INVISIBLE);
+//        btnInfo.setOnClickListener(onBtnInfoClickListener);
 
         //
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -95,40 +95,47 @@ public class ScannerActivity extends AppCompatActivity {
         OnSuccessListener<List<Barcode>> onSuccessListener =
                 barcodes -> {
                     if (!barcodes.isEmpty()) {
+
+                        Intent intent = new Intent();
+                        int RESULT = RESULT_CANCELED;
                         try {
                                 executorService.shutdown();
 
                             Barcode barcode = barcodes.get(0);
                             cameraProviderFeature.get().unbindAll();
-
-                            btnInfo.setVisibility(View.VISIBLE);
+                            intent.putExtra("BARCODE", barcode.getRawValue());
+                            RESULT = RESULT_OK;
+//                            btnInfo.setVisibility(View.VISIBLE);
 //                            productService.fetchProduct(barcode.getRawValue()).enqueue(new Callback<DataWrapper<Producto>>() {
-                            productService.fetchProduct().enqueue(new Callback<DataWrapper<Producto>>() {
-                                @Override
-                                public void onResponse(Call<DataWrapper<Producto>> call, Response<DataWrapper<Producto>> response) {
-                                    HttpStatus status = HttpStatus.resolve(response.code());
-                                    if (response.isSuccessful() &&  status == HttpStatus.OK){
-                                        scannedProduct = response.body().getData();
-                                        Toast.makeText(getApplicationContext(), "Producto: " + scannedProduct.getName(), Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        try {
-                                            Toast.makeText(getApplicationContext(), response.errorBody().string(), Toast.LENGTH_LONG).show();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<DataWrapper<Producto>> call, Throwable t) {
-                                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
-                                }
-                            });
+//                            productService.fetchProduct().enqueue(new Callback<DataWrapper<Producto>>() {
+//                                @Override
+//                                public void onResponse(Call<DataWrapper<Producto>> call, Response<DataWrapper<Producto>> response) {
+//                                    HttpStatus status = HttpStatus.resolve(response.code());
+//                                    if (response.isSuccessful() &&  status == HttpStatus.OK){
+//                                        scannedProduct = response.body().getData();
+//                                        Toast.makeText(getApplicationContext(), "Producto: " + scannedProduct.getName(), Toast.LENGTH_SHORT).show();
+//                                    } else {
+//                                        try {
+//                                            Toast.makeText(getApplicationContext(), response.errorBody().string(), Toast.LENGTH_LONG).show();
+//                                        } catch (IOException e) {
+//                                            e.printStackTrace();
+//                                        }
+//
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onFailure(Call<DataWrapper<Producto>> call, Throwable t) {
+//                                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
+//                                }
+//                            });
 
 
                         } catch (ExecutionException | InterruptedException e) {
                             e.printStackTrace();
+                        } finally {
+                            setResult(RESULT, intent);
+                            finish();
                         }
                     }
                 };
