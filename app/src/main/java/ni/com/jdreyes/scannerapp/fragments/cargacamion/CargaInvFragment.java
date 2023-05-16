@@ -31,6 +31,7 @@ import ni.com.jdreyes.scannerapp.rest.conf.RetrofitFactory;
 import ni.com.jdreyes.scannerapp.rest.service.CatalogService;
 import ni.com.jdreyes.scannerapp.rest.service.InventoryService;
 import ni.com.jdreyes.scannerapp.utils.CatalogCallBack;
+import ni.com.jdreyes.scannerapp.utils.DatePickerListener;
 import ni.com.jdreyes.scannerapp.utils.ThrowableUtils;
 import ni.com.jdreyes.scannerapp.utils.cons.ActivityRequestCode;
 import ni.com.jdreyes.scannerapp.utils.enums.HttpStatus;
@@ -39,7 +40,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class CargaInvFragment extends Fragment implements ActivityRequestCode, ThrowableUtils, CatalogCallBack {
+public class CargaInvFragment extends Fragment implements ActivityRequestCode
+        , ThrowableUtils, CatalogCallBack, DatePickerListener {
 
     private FragmentCargaInvBinding binding;
     private final CatalogService catalogService = RetrofitFactory.createService(CatalogService.class);
@@ -74,14 +76,14 @@ public class CargaInvFragment extends Fragment implements ActivityRequestCode, T
         try {
             validate();
             String fecha = binding.editFechaInvCarga.getText().toString();
-            Camion camion = (Camion) binding.spinnerCamion.getSelectedItem();
+            Camion camion = (Camion) binding.spinnerPlanta.getSelectedItem();
             OrdenCarga ordenCarga = (OrdenCarga) binding.spinnerOrdenCarga.getSelectedItem();
             String barcode = binding.editCodigoProdInv.getText().toString();
 
             VerificarOrden orden = new VerificarOrden();
             orden.setDate(new SimpleDateFormat("yyyyMMdd").format(new SimpleDateFormat("dd/MM/yyyy").parse(fecha)));
             orden.setCamion(camion);
-            orden.setOrderId(orden.getOrderId());
+            orden.setOrderId(ordenCarga.getId());
             orden.setBarcode(barcode);
 
             inventoryService.checkOrder(orden).enqueue(new Callback<DataWrapper<String>>() {
@@ -112,16 +114,6 @@ public class CargaInvFragment extends Fragment implements ActivityRequestCode, T
         startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
     }
 
-    public void onClickFecha(View view) {
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog dialog =
-                new DatePickerDialog(getContext(), R.style.Theme_Scannerapp, this::onDateSet, year, month, day);
-        dialog.show();
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -142,13 +134,13 @@ public class CargaInvFragment extends Fragment implements ActivityRequestCode, T
 
     private void validate() {
         throwIf(StringUtils::isEmpty, binding.editFechaInvCarga.getText().toString(), "Fecha: no se ha especificado");
-        throwIf(Objects::isNull, binding.spinnerCamion.getSelectedItem().toString(), "Camion: no se ha especificado");
+        throwIf(Objects::isNull, binding.spinnerPlanta.getSelectedItem().toString(), "Camion: no se ha especificado");
         throwIf(Objects::isNull, binding.spinnerOrdenCarga.getSelectedItem(), "Orden carga: no se ha especificado");
         throwIf(StringUtils::isEmpty, binding.editCodigoProdInv.getText().toString(), "El producto no ha sido escaneado");
     }
 
     private void loadCatalogs() {
-        catalogService.fetchCamiones().enqueue(catalogCallback(CamionAdapter.class, getContext(), binding.spinnerCamion));
+        catalogService.fetchCamiones().enqueue(catalogCallback(CamionAdapter.class, getContext(), binding.spinnerPlanta));
         catalogService.fetchOrdenesCarga().enqueue(catalogCallback(OrdenesAdapter.class, getContext(), binding.spinnerOrdenCarga));
     }
 

@@ -26,7 +26,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/panelbutton"
                 android:onClick="onClick"
-                android:text="Despacho"
+                android:text="Verificacion Inv. Produccion"
+                android:textSize="10sp"
                 app:iconPadding="0dp" />
 
             <Button
@@ -36,7 +37,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/panelbutton"
                 android:onClick="onClick"
-                android:text="Carga" />
+                android:text="Verificacion Pedidos"
+                android:textSize="10sp" />
 
             <Button
                 android:id="@+id/btnBodega"
@@ -45,7 +47,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/panelbutton"
                 android:onClick="onClick"
-                android:text="Bodega" />
+                android:text="Verificacion Inv, Bodega"
+                android:textSize="10sp" />
         </LinearLayout>
 
         <FrameLayout

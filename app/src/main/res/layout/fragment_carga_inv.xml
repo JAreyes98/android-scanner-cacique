@@ -36,6 +36,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:inputType="date" />
 
         <TextView
@@ -47,7 +51,7 @@
             android:textStyle="bold" />
 
         <Spinner
-            android:id="@+id/spinnerCamion"
+            android:id="@+id/spinnerPlanta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="40dp" />

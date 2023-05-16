@@ -58,19 +58,6 @@ public class ScannerActivity extends AppCompatActivity {
         //Init cameraX
         init();
 
-        //Button
-//        btnInfo = findViewById(R.id.btnInfo);
-//        btnInfo.setVisibility(View.INVISIBLE);
-//        btnInfo.setOnClickListener(onBtnInfoClickListener);
-
-        //
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                Toast.makeText(getApplicationContext(), "No puede ir mas atras", Toast.LENGTH_SHORT).show();
-            }
-        };
-        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     private final View.OnClickListener onBtnInfoClickListener = v -> {
@@ -105,30 +92,6 @@ public class ScannerActivity extends AppCompatActivity {
                             cameraProviderFeature.get().unbindAll();
                             intent.putExtra("BARCODE", barcode.getRawValue());
                             RESULT = RESULT_OK;
-//                            btnInfo.setVisibility(View.VISIBLE);
-//                            productService.fetchProduct(barcode.getRawValue()).enqueue(new Callback<DataWrapper<Producto>>() {
-//                            productService.fetchProduct().enqueue(new Callback<DataWrapper<Producto>>() {
-//                                @Override
-//                                public void onResponse(Call<DataWrapper<Producto>> call, Response<DataWrapper<Producto>> response) {
-//                                    HttpStatus status = HttpStatus.resolve(response.code());
-//                                    if (response.isSuccessful() &&  status == HttpStatus.OK){
-//                                        scannedProduct = response.body().getData();
-//                                        Toast.makeText(getApplicationContext(), "Producto: " + scannedProduct.getName(), Toast.LENGTH_SHORT).show();
-//                                    } else {
-//                                        try {
-//                                            Toast.makeText(getApplicationContext(), response.errorBody().string(), Toast.LENGTH_LONG).show();
-//                                        } catch (IOException e) {
-//                                            e.printStackTrace();
-//                                        }
-//
-//                                    }
-//                                }
-//
-//                                @Override
-//                                public void onFailure(Call<DataWrapper<Producto>> call, Throwable t) {
-//                                    Toast.makeText(getApplicationContext(), t.toString(), Toast.LENGTH_LONG).show();
-//                                }
-//                            });
 
 
                         } catch (ExecutionException | InterruptedException e) {

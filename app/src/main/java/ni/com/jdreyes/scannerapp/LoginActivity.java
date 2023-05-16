@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -68,13 +69,11 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             authenticationService.signin(authentication).enqueue(new Callback<Secret>() {
-//            authenticationService.signin().enqueue(new Callback<Secret>() {
                 @Override
                 public void onResponse(Call<Secret> call, Response<Secret> response) {
                     HttpStatus httpStatus = HttpStatus.resolve(response.code());
                     if (response.isSuccessful() &&  httpStatus == HttpStatus.OK) {
                         UserStaticInfo.setBaseAuth(response.body().getToken());
-//                        Intent intent = new Intent(getApplicationContext(), ScannerActivity.class);
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finish();

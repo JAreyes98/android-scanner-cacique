@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class VerificarOrden {
+public class InventarioBodega {
     private String date;
-    private Camion camion;
-    private String orderId;
+    private Bodega bodega;
     private String barcode;
+    private String idInventario;
 }

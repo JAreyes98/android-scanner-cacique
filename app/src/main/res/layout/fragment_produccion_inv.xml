@@ -35,8 +35,11 @@
             android:id="@+id/editFechaInvProc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:editable="false"
             android:ems="10"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:inputType="date" />
 
         <TextView
@@ -48,21 +51,22 @@
             android:textStyle="bold" />
 
         <Spinner
-            android:id="@+id/spinnerCamion"
+            android:id="@+id/spinnerPlanta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="40dp" />
+            android:minHeight="40dp"
+            android:tooltipText="Seleccione" />
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/textView15"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Carner Derivada"
+            android:text="Inventario"
             android:textStyle="bold" />
 
         <Spinner
-            android:id="@+id/spinnerOrdenCarga"
+            android:id="@+id/spinnerInventario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="40dp" />
@@ -94,27 +98,28 @@
             android:enabled="false"
             android:inputType="textPersonName" />
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Nombre"
-            android:textStyle="bold" />
+<!--        <TextView-->
+<!--            android:id="@+id/textView10"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:text="Nombre"-->
+<!--            android:textStyle="bold" />-->
 
-        <EditText
-            android:id="@+id/editNombreProductoInv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="textPersonName" />
+<!--        <EditText-->
+<!--            android:id="@+id/editNombreProductoInv"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:ems="10"-->
+<!--            android:enabled="false"-->
+<!--            android:inputType="textPersonName" />-->
 
         <Button
             android:id="@+id/btnVerificarCarga"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Verificar" />
+            android:text="Verificar"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/editMensajeProdInv"
@@ -142,9 +147,8 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:clickable="true"
-            android:enabled="true"
             android:visibility="visible"
-            app:backgroundTint="?attr/colorPrimarySurface"
+            app:backgroundTint="@color/design_default_color_primary"
             app:srcCompat="@drawable/barcode_business_tools_information_svgrepo_com" />
     </RelativeLayout>
 
