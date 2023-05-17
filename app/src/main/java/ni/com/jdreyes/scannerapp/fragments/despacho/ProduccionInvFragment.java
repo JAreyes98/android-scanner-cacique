@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -70,8 +71,18 @@ public class ProduccionInvFragment extends Fragment implements ActivityRequestCo
                 new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        try {
+                            if (binding.editFechaInvProc.getText() == null || binding.editFechaInvProc.getText().toString().isEmpty()) {
+                                Toast.makeText(getContext(), "Debe seleccionar una fecha", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            String fecha = binding.editFechaInvProc.getText().toString();
+                            String date = new SimpleDateFormat("yyyyMMdd").format(new SimpleDateFormat("dd/MM/yyyy").parse(fecha));
                         Planta bodega = (Planta) adapterView.getSelectedItem();
-                        findInventariosPorPlanta(bodega.getPlanta());
+                        findInventariosPorPlanta(bodega.getPlanta(), date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
@@ -143,8 +154,8 @@ public class ProduccionInvFragment extends Fragment implements ActivityRequestCo
         catalogService.fetchPlantas().enqueue(catalogCallback(PlantaAdapter.class, getContext(), binding.spinnerPlanta));
     }
 
-    private void findInventariosPorPlanta(String planta) {
-        catalogService.fetchInvetarioByPlant(planta).enqueue(catalogCallback(InventarioAdapter.class, getContext(), binding.spinnerInventario));
+    private void findInventariosPorPlanta(String planta, String date) {
+        catalogService.fetchInvetarioByPlant(planta, date).enqueue(catalogCallback(InventarioAdapter.class, getContext(), binding.spinnerInventario));
     }
 
     private void validate() {

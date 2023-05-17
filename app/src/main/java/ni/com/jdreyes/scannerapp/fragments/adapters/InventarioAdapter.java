@@ -22,6 +22,6 @@ public class InventarioAdapter extends AbstractAdapter<Inventario> {
 
     @Override
     public String onSelectShowText(Inventario obj) {
-        return String.format("%s - %s  %s", obj.getId(), obj.getPlanta(), new SimpleDateFormat("dd/MM/yyyy").format(obj.getDate()));
+        return obj.getDescription();
     }
 }

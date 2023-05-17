@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -76,12 +77,25 @@ public class BodegaFragment extends Fragment implements ActivityRequestCode, Thr
                 new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        Bodega bodega = (Bodega) adapterView.getSelectedItem();
-                        findInventariosPorBodega(bodega.getCodigo());
+
+                        try {
+                            if (binding.editFechaInvCarga.getText() == null || binding.editFechaInvCarga.getText().toString().isEmpty()) {
+                                Toast.makeText(getContext(), "Debe seleccionar una fecha", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+
+                            String fecha = binding.editFechaInvCarga.getText().toString();
+                            String date =  new SimpleDateFormat("yyyyMMdd").format(new SimpleDateFormat("dd/MM/yyyy").parse(fecha));
+                            Bodega bodega = (Bodega) adapterView.getSelectedItem();
+                            findInventariosPorBodega(bodega.getCodigo(), date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {}
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
                 });
 
         //Loading ...
@@ -108,7 +122,7 @@ public class BodegaFragment extends Fragment implements ActivityRequestCode, Thr
                     HttpStatus httpStatus = HttpStatus.resolve(response.code());
                     if (response.isSuccessful() && httpStatus == HttpStatus.OK && response.body().getData().equals("correcto")) {
                         binding.editMensajeProdInv.setText("Producto encontrado");
-                    }else {
+                    } else {
                         binding.editMensajeProdInv.setText("No se encuentra");
                     }
                 }
@@ -139,7 +153,7 @@ public class BodegaFragment extends Fragment implements ActivityRequestCode, Thr
                 String returnString = data.getStringExtra("BARCODE");
                 binding.editCodigoProdInv.setText(returnString);
                 binding.btnVerificarCarga.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 Toast.makeText(getContext(), "Error al escanear", Toast.LENGTH_SHORT).show();
                 binding.btnVerificarCarga.setVisibility(View.INVISIBLE);
             }
@@ -150,8 +164,8 @@ public class BodegaFragment extends Fragment implements ActivityRequestCode, Thr
         catalogService.fetchBodegas().enqueue(catalogCallback(BodegaAdapter.class, getContext(), binding.spinnerPlanta));
     }
 
-    private void findInventariosPorBodega(String bodega) {
-        catalogService.fetchInvetarioByWarehouse(bodega).enqueue(catalogCallback(InventarioAdapter.class, getContext(), binding.spinnerInventario));
+    private void findInventariosPorBodega(String bodega, String date) {
+        catalogService.fetchInvetarioByWarehouse(bodega, date).enqueue(catalogCallback(InventarioAdapter.class, getContext(), binding.spinnerInventario));
     }
 
     private void validate() {

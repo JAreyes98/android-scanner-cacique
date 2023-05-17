@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class Inventario {
     private String id;
+    private String description;
     private Timestamp date;
     private String planta;
     private String bodega;

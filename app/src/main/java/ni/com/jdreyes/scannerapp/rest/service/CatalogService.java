@@ -24,8 +24,8 @@ public interface CatalogService {
     Call<ListDataWrapper<OrdenCarga>> fetchOrdenesCarga();
 
     @GET("v1/catalogs/inventorySearch")
-    Call<ListDataWrapper<Inventario>> fetchInvetarioByWarehouse(@Query("warehouse") String warehouse);
+    Call<ListDataWrapper<Inventario>> fetchInvetarioByWarehouse(@Query("warehouse") String warehouse, @Query("date") String date);
 
     @GET("v1/catalogs/inventorySearch")
-    Call<ListDataWrapper<Inventario>> fetchInvetarioByPlant(@Query("plant") String plant);
+    Call<ListDataWrapper<Inventario>> fetchInvetarioByPlant(@Query("plant") String plant, @Query("date") String date);
 }

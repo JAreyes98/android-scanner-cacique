@@ -30,6 +30,10 @@ public interface CatalogCallBack {
                                 ,android.R.layout.simple_spinner_item
                                 , response.body().getData()
                         );
+
+                        if (response.body().getData() == null || response.body().getData().size() == 0){
+                            Toast.makeText(context, "No se encontraron registros", Toast.LENGTH_LONG).show();
+                        }
                     } catch (IllegalAccessException | java.lang.InstantiationException | InvocationTargetException | NoSuchMethodException e) {
                         e.printStackTrace();
                     }
