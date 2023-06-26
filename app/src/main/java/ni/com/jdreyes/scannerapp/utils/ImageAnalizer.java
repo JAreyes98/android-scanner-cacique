@@ -57,7 +57,6 @@ public class ImageAnalizer implements ImageAnalysis.Analyzer {
             .build();
 
         BarcodeScanning.getClient(options)
-//    BarcodeScanning.getClient()
             .process(ii)
         .addOnSuccessListener(onSuccessListener)
         .addOnFailureListener(onFailureListener)
