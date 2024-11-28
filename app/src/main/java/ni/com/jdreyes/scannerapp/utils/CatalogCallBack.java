@@ -50,4 +50,40 @@ public interface CatalogCallBack {
             }
         };
     }
+
+     default <T> Callback<List<T>> catalogCallbackList(Class<? extends AbstractAdapter> adapterClass, Context context, Spinner spinner) {
+        return new Callback<List<T>>() {
+            @Override
+            public void onResponse(Call<List<T>> call, Response<List<T>> response) {
+                HttpStatus httpStatus = HttpStatus.resolve(response.code());
+                if (response.isSuccessful() && httpStatus == HttpStatus.OK) {
+
+                    AbstractAdapter adapter = null;
+                    try {
+                        adapter = adapterClass.getConstructor(Context.class, int.class, List.class).newInstance(
+                                context
+                                ,android.R.layout.simple_spinner_item
+                                , response.body()
+                        );
+
+                        if (response.body() == null || response.body().size() == 0){
+                            Toast.makeText(context, "No se encontraron registros", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    } catch (IllegalAccessException | java.lang.InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+                        e.printStackTrace();
+                    }
+
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(adapter);
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<T>> call, Throwable t) {
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        };
+    }
 }

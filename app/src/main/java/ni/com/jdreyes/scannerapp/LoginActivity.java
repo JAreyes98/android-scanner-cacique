@@ -29,8 +29,9 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private final AuthenticationService authenticationService
-            = RetrofitFactory.createService(AuthenticationService.class);
+
+
+    private final AuthenticationService authenticationService = RetrofitFactory.createService(AuthenticationService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,12 @@ public class LoginActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED) {
             ChekingPermission.checkPermissions(this);
             return;
+        }
+        UserStaticInfo.setBaseAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNGMjAyMCAiLCJwYXNzd29yZCI6IlNGT05TRUNBIiwiZXhwIjoxNzMyODM5MjI1fQ.R9AnD_OCp8PacKj0fo3Puy4DtL6H2BMtQBTuzVOgyIM");
+        if(UserStaticInfo.getAuth() != null){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -71,9 +78,10 @@ public class LoginActivity extends AppCompatActivity {
             authenticationService.signin(authentication).enqueue(new Callback<Secret>() {
                 @Override
                 public void onResponse(Call<Secret> call, Response<Secret> response) {
-                    HttpStatus httpStatus = HttpStatus.resolve(response.code());
+                    HttpStatus httpStatus = HttpStatus.resolve(response.code());//200, 500, 400
                     if (response.isSuccessful() &&  httpStatus == HttpStatus.OK) {
                         UserStaticInfo.setBaseAuth(response.body().getToken());
+
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                         finish();

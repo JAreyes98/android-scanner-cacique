@@ -50,10 +50,12 @@ public class ImageAnalizer implements ImageAnalysis.Analyzer {
         new BarcodeScannerOptions.Builder()
             .setBarcodeFormats(
 //                Barcode.FORMAT_QR_CODE,
-                Barcode.FORMAT_CODABAR,
-                Barcode.FORMAT_CODE_128,
-                Barcode.FORMAT_EAN_13,
-                Barcode.FORMAT_PDF417)
+                    Barcode.FORMAT_CODE_128,
+                    Barcode.FORMAT_ALL_FORMATS
+//                Barcode.FORMAT_CODABAR,
+//                Barcode.FORMAT_EAN_13,
+//                Barcode.FORMAT_PDF417
+            )
             .build();
 
         BarcodeScanning.getClient(options)

@@ -19,7 +19,11 @@ public class RetrofitFactory {
 
     private static Retrofit retrofit = builder.build();
 
-    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+    //private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+            .connectTimeout(30, java.util.concurrent.TimeUnit.SECONDS) // 30 segundos para conexión
+            .readTimeout(30, java.util.concurrent.TimeUnit.SECONDS)    // 30 segundos para leer
+            .writeTimeout(30, java.util.concurrent.TimeUnit.SECONDS);  // 30 segundos para escribir
 
 
     public static <S> S createService(

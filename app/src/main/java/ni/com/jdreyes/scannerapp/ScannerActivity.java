@@ -2,11 +2,11 @@ package ni.com.jdreyes.scannerapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Size;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
@@ -22,7 +22,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.common.Barcode;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
@@ -32,14 +31,9 @@ import java.util.concurrent.Executors;
 
 import ni.com.jdreyes.scannerapp.databinding.ActivityScannerBinding;
 import ni.com.jdreyes.scannerapp.models.Producto;
-import ni.com.jdreyes.scannerapp.models.wrapper.DataWrapper;
 import ni.com.jdreyes.scannerapp.rest.conf.RetrofitFactory;
 import ni.com.jdreyes.scannerapp.rest.service.ProductService;
 import ni.com.jdreyes.scannerapp.utils.ImageAnalizer;
-import ni.com.jdreyes.scannerapp.utils.enums.HttpStatus;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ScannerActivity extends AppCompatActivity {
 
@@ -81,6 +75,9 @@ public class ScannerActivity extends AppCompatActivity {
 
         OnSuccessListener<List<Barcode>> onSuccessListener =
                 barcodes -> {
+                    for (Barcode barcode : barcodes) {
+                        Log.d("Barcode Value", "Value: " + barcode.getRawValue());
+                    }
                     if (!barcodes.isEmpty()) {
 
                         Intent intent = new Intent();
@@ -131,7 +128,7 @@ public class ScannerActivity extends AppCompatActivity {
 
         ImageAnalysis imageAnalysis =
                 new ImageAnalysis.Builder()
-                        .setTargetResolution(new Size(1200, 720))
+                        .setTargetResolution(new Size(1920, 1080))
                         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                         .build();
         imageAnalysis.setAnalyzer(executorService, imageAnalizer);
