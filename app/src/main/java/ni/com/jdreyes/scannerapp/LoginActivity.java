@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
             ChekingPermission.checkPermissions(this);
             return;
         }
-        UserStaticInfo.setBaseAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNGMjAyMCAiLCJwYXNzd29yZCI6IlNGT05TRUNBIiwiZXhwIjoxNzMyODM5MjI1fQ.R9AnD_OCp8PacKj0fo3Puy4DtL6H2BMtQBTuzVOgyIM");
+//        UserStaticInfo.setBaseAuth("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjEyMzQiLCJwYXNzd29yZCI6ImpkcmV5ZXMiLCJleHAiOjE3MzI5MjU5MzB9.zvONkAgG3DMAAdRqiklClmubqb0ebt6eI9T9q49HOmI");
         if(UserStaticInfo.getAuth() != null){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
