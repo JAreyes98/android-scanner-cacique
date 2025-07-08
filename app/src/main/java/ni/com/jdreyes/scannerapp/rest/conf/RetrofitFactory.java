@@ -1,5 +1,7 @@
 package ni.com.jdreyes.scannerapp.rest.conf;
 
+import static ni.com.jdreyes.scannerapp.rest.conf.APIConfiguration.SECRET;
+
 import android.text.TextUtils;
 
 import com.google.gson.GsonBuilder;
@@ -28,7 +30,8 @@ public class RetrofitFactory {
 
     public static <S> S createService(
             Class<S> serviceClass) {
-        String token = UserStaticInfo.getAuth();
+        // String token = UserStaticInfo.getAuth();
+        String token = SECRET;
         if (!TextUtils.isEmpty(token) ) {
             AuthenticationInterceptor interceptor =
                     new AuthenticationInterceptor(token);

@@ -1,5 +1,9 @@
 package ni.com.jdreyes.scannerapp.rest.service;
 
+import java.util.List;
+
+import ni.com.jdreyes.scannerapp.models.BulkItem;
+import ni.com.jdreyes.scannerapp.models.BulkRequest;
 import ni.com.jdreyes.scannerapp.models.InventarioBodega;
 import ni.com.jdreyes.scannerapp.models.VerificarInventarioProduccion;
 import ni.com.jdreyes.scannerapp.models.VerificarOrden;
@@ -18,4 +22,6 @@ public interface InventoryService {
 
         @POST("v1/inventory/warehouse")
         Call<DataWrapper<String>> checkWarehouseInventory(@Body InventarioBodega object);
+        @POST("v1/inventory/bulk")
+        Call<DataWrapper<String>> bulkData(@Body BulkRequest data);
 }

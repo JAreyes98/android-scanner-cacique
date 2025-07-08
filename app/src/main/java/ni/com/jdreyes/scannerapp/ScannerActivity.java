@@ -39,8 +39,7 @@ public class ScannerActivity extends AppCompatActivity {
 
 
     private ExecutorService executorService;
-    private FloatingActionButton btnInfo;
-    private final ProductService productService = RetrofitFactory.createService(ProductService.class);
+//    private final ProductService productService = RetrofitFactory.createService(ProductService.class);
 
     private Producto scannedProduct;
 
@@ -53,21 +52,6 @@ public class ScannerActivity extends AppCompatActivity {
         init();
 
     }
-
-    private final View.OnClickListener onBtnInfoClickListener = v -> {
-        Bundle bundle = new Bundle();
-        bundle.putInt("id", scannedProduct.getId());
-        bundle.putString("name", scannedProduct.getName());
-        bundle.putString("codproduct", scannedProduct.getCodproduct());
-        bundle.putString("barcode", scannedProduct.getBarcode());
-        bundle.putString("lastUpdate", new SimpleDateFormat("dd/MM/yyyy").format(
-                Objects.isNull(scannedProduct.getUpdateAt())
-                        ? scannedProduct.getCreateAt() : scannedProduct.getUpdateAt()
-        ));
-        Intent intent = new Intent(getApplicationContext(), ProductoActivity.class);
-        intent.putExtras(bundle);
-        startActivityForResult(intent, 0);
-    };
 
     private void init() {
         executorService = Executors.newSingleThreadExecutor();
@@ -145,7 +129,7 @@ public class ScannerActivity extends AppCompatActivity {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 init();
-                btnInfo.setVisibility(View.INVISIBLE);
+
             }else {
                 Toast.makeText(this, "Error al escanear", Toast.LENGTH_SHORT).show();
             }
