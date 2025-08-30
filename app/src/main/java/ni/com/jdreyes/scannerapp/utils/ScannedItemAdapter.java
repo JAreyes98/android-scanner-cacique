@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 import ni.com.jdreyes.scannerapp.R;
@@ -28,7 +29,7 @@ public class ScannedItemAdapter extends RecyclerView.Adapter<ScannedItemAdapter.
     }
 
     @Override
-    public ScannedItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_scanned, parent, false);
         return new ViewHolder(view);
@@ -38,7 +39,7 @@ public class ScannedItemAdapter extends RecyclerView.Adapter<ScannedItemAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         ScannedItem item = items.get(position);
         holder.barcodeText.setText(item.getBarcode());
-        holder.timestampText.setText(item.getTimestamp());
+        holder.timestampText.setText(String.format("%s - %s | %s", String.valueOf(position + 1), item.getBarcode(), item.getTimestamp()));
     }
 
     @Override

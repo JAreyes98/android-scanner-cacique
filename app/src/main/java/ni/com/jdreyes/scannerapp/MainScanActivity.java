@@ -17,10 +17,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -52,28 +56,92 @@ public class MainScanActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadScannedItems(); // Populate the list
-
-
+        focusInput();
         Button buttonScanner = findViewById(R.id.btnScan);
+        buttonScanner.setEnabled(true);
         buttonScanner.setOnClickListener(this::onClickScan);
-
+        setupAutoScan();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ChekingPermission.checkPermissions(this);
-            return;
         }
     }
 
-    public void onClickScan(View view) {
-        Toast.makeText(getApplicationContext(), "evento", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(getApplicationContext(), ScannerActivity.class);
-        startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+    private void focusInput(){
+        EditText input = findViewById(R.id.inputBarCode);
+        input.requestFocus();
     }
+
+    private void setupAutoScan() {
+        EditText input = findViewById(R.id.inputBarCode);
+
+        // Opción 1: detectar Enter físico
+        input.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP) {
+                String scannedBarcode = input.getText().toString().trim();
+                processScanned(scannedBarcode);
+                input.setText("");
+                return true;
+            }
+            return false;
+        });
+
+        // Opción 2: por si el Enter llega como \n
+        input.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override public void afterTextChanged(Editable s) {
+                // si DataWedge manda un salto de línea al final
+                if (s.length() > 0 && s.charAt(s.length()-1) == '\n') {
+                    String code = s.toString().trim();
+                    processScanned(code);
+                    s.clear();
+                }
+            }
+        });
+    }
+
+    private void processScanned(String scannedBarcode) {
+        if (scannedBarcode.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "No hay un código de barra presente", Toast.LENGTH_LONG).show();
+            focusInput();
+            cleanInput();
+            return;
+        }
+        if (itemList.stream().anyMatch(item -> item.getBarcode().equalsIgnoreCase(scannedBarcode))) {
+            Toast.makeText(getApplicationContext(), "Validación -> Código ya ha sido agregado", Toast.LENGTH_LONG).show();
+            focusInput();
+            cleanInput();
+            return;
+        }
+        insertScannedCode(this, scannedBarcode);
+        Toast.makeText(getApplicationContext(), "Código agregado correctamente", Toast.LENGTH_LONG).show();
+        focusInput();
+        cleanInput();
+
+    }
+
+    private void cleanInput(){
+        EditText input = findViewById(R.id.inputBarCode);
+        input.setText("");
+    }
+
+
+
+    public void onClickScan(View view) {
+//        Toast.makeText(getApplicationContext(), "evento", Toast.LENGTH_LONG).show();
+//        Intent intent = new Intent(getApplicationContext(), ScannerActivity.class);
+//        startActivityForResult(intent, SECOND_ACTIVITY_REQUEST_CODE);
+        EditText input = findViewById(R.id.inputBarCode);
+        String scannedBarcode = input.getText().toString();
+        processScanned(scannedBarcode);
+    }
+
 
     private void loadScannedItems() {
         MyDatabaseHelper dbHelper = new MyDatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT id, barcode, timestamp FROM scanned_items ORDER BY id DESC", null);
+        Cursor cursor = db.rawQuery("SELECT id, barcode, timestamp FROM scanned_items ORDER BY id asc", null);
         System.out.println("Loading..");
         itemList.clear();
         while (cursor.moveToNext()) {

@@ -34,7 +34,7 @@ public interface CatalogCallBack {
                         if (response.body().getData() == null || response.body().getData().size() == 0){
                             Toast.makeText(context, "No se encontraron registros", Toast.LENGTH_LONG).show();
                         }
-                    } catch (IllegalAccessException | java.lang.InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+                    } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
                         e.printStackTrace();
                     }
 
@@ -70,7 +70,7 @@ public interface CatalogCallBack {
                             Toast.makeText(context, "No se encontraron registros", Toast.LENGTH_LONG).show();
                             return;
                         }
-                    } catch (IllegalAccessException | java.lang.InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+                    } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
                         e.printStackTrace();
                     }
 
