@@ -141,7 +141,7 @@ public class MainScanActivity extends AppCompatActivity {
     private void loadScannedItems() {
         MyDatabaseHelper dbHelper = new MyDatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT id, barcode, timestamp FROM scanned_items ORDER BY id asc", null);
+        Cursor cursor = db.rawQuery("SELECT id, barcode, timestamp FROM scanned_items ORDER BY id desc", null);
         System.out.println("Loading..");
         itemList.clear();
         while (cursor.moveToNext()) {
